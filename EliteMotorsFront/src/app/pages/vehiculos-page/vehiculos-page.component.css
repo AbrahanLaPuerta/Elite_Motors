@@ -1,0 +1,35 @@
+.canvas-wrapper {
+  position: obsolute;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.wheel-menu {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(30, 30, 30, 0.8);
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
+  z-index: 10;
+}
+
+.wheel-menu button {
+  display: block;
+  margin-top: 10px;
+  background: #bfa760;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.wheel-menu button:hover {
+  background: #d4b865;
+}

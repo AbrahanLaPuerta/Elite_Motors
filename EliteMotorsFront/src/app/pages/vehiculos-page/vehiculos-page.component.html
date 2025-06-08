@@ -1,0 +1,17 @@
+
+
+<!-- <select id="vehicle-selector" (change)="onVehicleChange($event)">
+    <option value="">Selecciona un vehículo</option>
+    <option *ngFor="let item of miscoches" value="{{ item }}">{{ item }}</option>
+</select> -->
+
+<div class="canvas-wrapper">
+    <div id="renderer-container" style="width: 100vw; height: 100vh;"></div>
+
+  <div class="wheel-menu">
+    <h3>Selecciona Ruedas</h3>
+    <button (click)="cambiarRuedas()">Deportivas</button>
+    <button (click)="cambiarRuedas()">Todoterreno</button>
+    <button (click)="cambiarRuedas()">Clásicas</button>
+  </div>
+</div>

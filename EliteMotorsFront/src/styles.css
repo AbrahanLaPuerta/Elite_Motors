@@ -1,0 +1,57 @@
+:root {
+  /* === PALETA PRINCIPAL === */
+  --primary-color: #2563eb; /* Azul royal moderno */
+  --primary-hover: #1d4ed8; /* Azul royal intenso */
+  --primary-light: #dbeafe; /* Azul muy claro para fondos */
+  --secondary-color: #64748b; /* Gris azulado elegante */
+  --accent-color: #f59e0b; /* Ámbar premium para destacar */
+  --accent-hover: #d97706; /* Ámbar intenso */
+
+  /* === COLORES DE TEXTO === */
+  --text-color: #0f172a; /* Slate 900 - Negro azulado */
+  --text-light: #475569; /* Slate 600 - Gris medio */
+  --text-muted: #94a3b8; /* Slate 400 - Gris claro */
+  --text-inverse: #ffffff; /* Blanco puro */
+
+  /* === FONDOS === */
+  --background-color: #ffffff; /* Blanco puro */
+  --card-bg: #ffffff; /* Blanco para tarjetas */
+  --card-bg-hover: #f8fafc; /* Hover sutil */
+  --secondary-bg: #f8fafc; /* Slate 50 - Blanco azulado */
+
+  /* === BORDES === */
+  --border-color: #e2e8f0; /* Slate 200 - Borde sutil */
+  --border-medium: #cbd5e1; /* Slate 300 - Borde visible */
+  --border-strong: #94a3b8; /* Slate 400 - Borde definido */
+
+  /* === COLORES DE ESTADO === */
+  --success-color: #059669; /* Emerald 600 - Verde profesional */
+  --warning-color: #d97706; /* Amber 600 - Naranja elegante */
+  --danger-color: #dc2626; /* Red 600 - Rojo moderno */
+  --info-color: #0284c7; /* Sky 600 - Azul información */
+
+  /* === SOMBRAS MODERNAS === */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+  /* === EFECTOS ESPECIALES === */
+  --glow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  --radius: 8px;
+  --transition: all 0.2s ease-out;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body::-webkit-scrollbar {
+  display: none;
+}

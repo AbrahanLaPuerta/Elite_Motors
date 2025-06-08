@@ -1,0 +1,401 @@
+<div class="vehiculos-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="header-info">
+        <h1>Vehículos Disponibles</h1>
+        <p>Encuentra el coche perfecto para ti</p>
+      </div>
+      <div class="view-buttons">
+        <button 
+          (click)="vistaGrid = true"
+          [class]="'view-btn ' + (vistaGrid ? 'active' : '')"
+        >
+          <i class="fas fa-th"></i>
+          Grid
+        </button>
+        <button 
+          (click)="vistaGrid = false"
+          [class]="'view-btn ' + (!vistaGrid ? 'active' : '')"
+        >
+          <i class="fas fa-list"></i>
+          Lista
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="content-wrapper">
+      <!-- Filtros - Sidebar -->
+      <div class="filters-sidebar">
+        <div class="filters-card">
+          <div class="filters-header">
+            <h2><i class="fas fa-filter"></i> Filtros</h2>
+            <button 
+              class="mobile-filter-btn"
+              (click)="toggleFiltrosMobile()"
+            >
+              <i class="fas fa-filter"></i>
+              Filtros
+            </button>
+          </div>
+
+          <div class="filters-content" [class.hidden]="!mostrarFiltrosMobile">
+            <!-- Búsqueda -->
+            <div class="filter-group">
+              <label><i class="fas fa-search"></i> Buscar vehículo</label>
+              <div class="search-input">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  placeholder="Marca, modelo..."
+                  [(ngModel)]="busqueda"
+                  (input)="filtrarVehiculos()"
+                />
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Marca -->
+            <div class="filter-group">
+              <label><i class="fas fa-car"></i> Marca</label>
+              <select 
+                [(ngModel)]="filtroMarca"
+                (change)="filtrarVehiculos()"
+              >
+                <option value="">Todas las marcas</option>
+                <option *ngFor="let marca of marcas" [value]="marca">{{marca}}</option>
+              </select>
+            </div>
+
+            <!-- Precio -->
+            <div class="filter-group">
+              <label><i class="fas fa-euro-sign"></i> Rango de precio</label>
+              <select 
+                [(ngModel)]="filtroPrecio"
+                (change)="filtrarVehiculos()"
+              >
+                <option value="">Cualquier precio</option>
+                <option value="0-25000">Hasta €25.000</option>
+                <option value="25000-40000">€25.000 - €40.000</option>
+                <option value="40000-60000">€40.000 - €60.000</option>
+                <option value="60000+">Más de €60.000</option>
+              </select>
+            </div>
+
+            <!-- Combustible -->
+            <div class="filter-group">
+              <label><i class="fas fa-gas-pump"></i> Tipo de combustible</label>
+              <select 
+                [(ngModel)]="filtroCombustible"
+                (change)="filtrarVehiculos()"
+              >
+                <option value="">Cualquier combustible</option>
+                <option value="gasolina">Gasolina</option>
+                <option value="diesel">Diésel</option>
+                <option value="híbrido">Híbrido</option>
+                <option value="eléctrico">Eléctrico</option>
+              </select>
+            </div>
+
+            <button class="clear-filters-btn" (click)="limpiarFiltros()">
+              <i class="fas fa-times"></i>
+              Limpiar filtros
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido principal -->
+      <div class="main-section">
+        <!-- Barra de búsqueda móvil -->
+        <div class="mobile-search">
+          
+        </div>
+
+        <!-- Resultados -->
+        <div class="results-bar">
+          <div class="results-info">
+            <i class="fas fa-car"></i>
+            <span class="results-count">{{vehiculosFiltrados.length}}</span> vehículos encontrados
+          </div>
+          <select 
+            [(ngModel)]="ordenamiento"
+            (change)="ordenarVehiculos()"
+            class="sort-select"
+          >
+            <option selected value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="anio-desc">Año: más reciente</option>
+            <option value="km-asc">Kilómetros: menor a mayor</option>
+          </select>
+        </div>
+
+        <!-- Grid de vehículos -->
+        <div *ngIf="vistaGrid" class="vehicles-grid">
+          <div *ngFor="let vehiculo of vehiculosFiltrados" class="vehicle-card">
+            <!-- Imagen -->
+            <div class="vehicle-image">
+              <img 
+                [src]="'../assets/images/'+vehiculo.Modelo3d+'.png'" 
+                [alt]="vehiculo.marca + ' ' + vehiculo.modelo"
+                onerror="this.src='https://via.placeholder.com/300x200/f0f0f0/666?text=Sin+Imagen'"
+              />
+              
+            </div>
+
+            <!-- Contenido -->
+            <div class="vehicle-content">
+              <div class="vehicle-header">
+                <h3>{{vehiculo.marca}} {{vehiculo.modelo}}</h3>
+                <span [class]="getEstadoBadgeClass(vehiculo.estado)">{{vehiculo.estado}}</span>
+              </div>
+              <p class="vehicle-price">€{{vehiculo.precio | number:'1.0-0'}}</p>
+              
+              <div class="vehicle-details">
+                <div class="detail-item">
+                  <i class="far fa-calendar"></i>
+                  <span>{{vehiculo.anio}}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-road"></i>
+                  <span>{{vehiculo.Kilometraje | number:'1.0-0'}} km</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-palette"></i>
+                  <span>{{vehiculo.color}}</span>
+                </div>
+                <div class="detail-item">
+                  <i [class]="getCombustibleIcon(vehiculo.combustible)"></i>
+                  <span>{{vehiculo.combustible | titlecase}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="vehicle-actions">
+              <button class="btn-primary" (click)="verDetalles(vehiculo)">
+                <i class="far fa-eye"></i>
+                Ver detalles
+              </button>
+              <button class="btn-secondary" (click)="configurar(vehiculo)">
+                <i class="fa-solid fa-pencil"></i>
+                Configurar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista Lista -->
+        <div *ngIf="!vistaGrid" class="vehicles-list">
+          <div *ngFor="let vehiculo of vehiculosFiltrados" class="vehicle-list-item">
+            <div class="list-image">
+              <img 
+                [src]="'../assets/images/'+vehiculo.Modelo3d+'.png'" 
+                [alt]="vehiculo.marca + ' ' + vehiculo.modelo"
+                onerror="this.src='https://via.placeholder.com/200x140/f0f0f0/666?text=Sin+Imagen'"
+              />
+              <div class="combustible-badge">
+                <i [class]="getCombustibleIcon(vehiculo.combustible)"></i>
+              </div>
+            </div>
+            
+            <div class="list-content">
+              <div class="list-header">
+                <div class="list-title">
+                  <h3>{{vehiculo.marca}} {{vehiculo.modelo}}</h3>
+                  <p class="vehicle-price">€{{vehiculo.precio | number:'1.0-0'}}</p>
+                </div>
+                
+              </div>
+              
+              <div class="list-details">
+                <div class="detail-item">
+                  <i class="far fa-calendar"></i>
+                  <span>{{vehiculo.anio}}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-road"></i>
+                  <span>{{vehiculo.Kilometraje | number:'1.0-0'}} km</span>
+                </div>
+                <div class="detail-item">
+                  <i class="fas fa-palette"></i>
+                  <span>{{vehiculo.color}}</span>
+                </div>
+                <div class="detail-item">
+                  <i [class]="getCombustibleIcon(vehiculo.combustible)"></i>
+                  <span>{{vehiculo.combustible | titlecase}}</span>
+                </div>
+              </div>
+              
+              <div class="list-buttons">
+                <button class="btn-primary" (click)="verDetalles(vehiculo)">
+                  <i class="far fa-eye"></i>
+                  Ver detalles
+                </button>
+                <button class="btn-secondary" (click)="configurar(vehiculo)">
+                  <i class="fa-solid fa-pencil"></i>
+                  Configurar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sin resultados -->
+        <div *ngIf="vehiculosFiltrados.length === 0" class="no-results">
+          <i class="fas fa-car-crash"></i>
+          <h3>No se encontraron vehículos</h3>
+          <p>Intenta ajustar los filtros de búsqueda</p>
+          <button class="btn-primary" (click)="limpiarFiltros()">
+            <i class="fas fa-refresh"></i>
+            Limpiar filtros
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de detalles -->
+  <div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="vehiculoSeleccionado">
+      <div class="modal-header">
+        <div class="modal-title">
+          <h2>{{vehiculoSeleccionado.marca}} {{vehiculoSeleccionado.modelo}}</h2>
+          <span [class]="getEstadoBadgeClass(vehiculoSeleccionado.estado)">{{vehiculoSeleccionado.estado}}</span>
+        </div>
+        <button class="modal-close" (click)="cerrarModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-grid">
+          <!-- Imagen del vehículo -->
+          <div class="modal-image-section">
+            <div class="modal-image-container">
+              <img 
+                [src]="'../assets/images/'+vehiculoSeleccionado.Modelo3d+'.png'" 
+                [alt]="vehiculoSeleccionado.marca + ' ' + vehiculoSeleccionado.modelo"
+                class="modal-vehicle-image"
+                onerror="this.src='https://via.placeholder.com/500x350/f0f0f0/666?text=Sin+Imagen'"
+              />
+              <div class="modal-image-overlay">
+                <div class="combustible-badge large">
+                  <i [class]="getCombustibleIcon(vehiculoSeleccionado.combustible)"></i>
+                  <span>{{vehiculoSeleccionado.combustible | titlecase}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="modal-price-section">
+              <div class="price-container">
+                <span class="price-label">Precio</span>
+                <p class="modal-price">€{{vehiculoSeleccionado.precio | number:'1.0-0'}}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Características del vehículo -->
+          <div class="modal-details-section">
+            <div class="details-group">
+              <h3><i class="fas fa-info-circle"></i> Información General</h3>
+              <div class="details-grid">
+                <div class="detail-row">
+                  <div class="detail-icon">
+                    <i class="fas fa-hashtag"></i>
+                  </div>
+                  <div class="detail-content">
+                    <span class="detail-label">Bastidor:</span>
+                    <span class="detail-value">{{vehiculoSeleccionado.num_bastidor}}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon">
+                    <i class="far fa-calendar"></i>
+                  </div>
+                  <div class="detail-content">
+                    <span class="detail-label">Año:</span>
+                    <span class="detail-value">{{vehiculoSeleccionado.anio}}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon">
+                    <i class="fas fa-road"></i>
+                  </div>
+                  <div class="detail-content">
+                    <span class="detail-label">Kilómetros:</span>
+                    <span class="detail-value">{{vehiculoSeleccionado.Kilometraje | number:'1.0-0'}} km</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon">
+                    <i class="fas fa-palette"></i>
+                  </div>
+                  <div class="detail-content">
+                    <span class="detail-label">Color:</span>
+                    <span class="detail-value">{{vehiculoSeleccionado.color}}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon">
+                    <i class="fas fa-car"></i>
+                  </div>
+                  <div class="detail-content">
+                    <span class="detail-label">Tipo:</span>
+                    <span class="detail-value">{{vehiculoSeleccionado.tipo}}</span>
+                  </div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-icon">
+                    <i [class]="getCombustibleIcon(vehiculoSeleccionado.combustible)"></i>
+                  </div>
+                  <div class="detail-content">
+                    <span class="detail-label">Combustible:</span>
+                    <span class="detail-value">{{vehiculoSeleccionado.combustible | titlecase}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="details-group">
+              <h3><i class="fas fa-star"></i> Estado del Vehículo</h3>
+              <div class="estado-info">
+                <div class="estado-visual">
+                  <span [class]="getEstadoBadgeClass(vehiculoSeleccionado.estado) + ' large'">
+                    {{vehiculoSeleccionado.estado}}
+                  </span>
+                </div>
+                <div class="estado-description">
+                  <p *ngIf="vehiculoSeleccionado.estado === 'Nuevo'">
+                    Vehículo completamente nuevo, sin uso previo.
+                  </p>
+                  <p *ngIf="vehiculoSeleccionado.estado === 'Seminuevo'">
+                    Vehículo con poco uso, en excelente estado.
+                  </p>
+                  <p *ngIf="vehiculoSeleccionado.estado === 'Usado'">
+                    Vehículo con uso previo, revisado y en buen estado.
+                  </p>
+                  <p *ngIf="vehiculoSeleccionado.estado === 'Restaurado'">
+                    Vehículo Restaurado, con garantía de calidad.
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn-primary large" (click)="configurar(vehiculoSeleccionado)">
+                <i class="fa-solid fa-pencil"></i>
+                Configurar vehiculo
+              </button>
+              <button class="btn-secondary large" (click)="cerrarModal()">
+                <i class="fas fa-times"></i>
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

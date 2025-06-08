@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cliente {
+  dni_cliente String  @id @db.VarChar(9)
+  usuario     String  @db.VarChar(50)
+  passwd      String  @db.VarChar(64)
+  nombre      String  @db.VarChar(20)
+  apellidos   String  @db.VarChar(50)
+  telefono    String? @db.VarChar(16)
+  email       String? @db.VarChar(50)
+  direccion   String? @db.VarChar(100)
+  venta       venta[]
+}
+
+model empleado {
+  dni_empleado String  @id @db.VarChar(9)
+  usuario      String  @db.VarChar(50)
+  passwd       String  @db.VarChar(64)
+  nombre       String  @db.VarChar(20)
+  apellidos    String  @db.VarChar(50)
+  cargo        Int
+  telefono     String? @db.VarChar(16)
+  email        String? @db.VarChar(50)
+  venta        venta[]
+}
+
+model proveedor {
+  id_proveedor Int          @id @default(autoincrement())
+  nombre       String       @db.VarChar(50)
+  telefono     String?      @db.VarChar(16)
+  direccion    String?      @db.VarChar(100)
+  suministra   suministra[]
+}
+
+model suministra {
+  id_proveedor Int
+  num_bastidor String    @db.VarChar(17)
+  proveedor    proveedor @relation(fields: [id_proveedor], references: [id_proveedor], onUpdate: Restrict, map: "suministra_ibfk_1")
+  vehiculo     vehiculo  @relation(fields: [num_bastidor], references: [num_bastidor], onUpdate: Restrict, map: "suministra_ibfk_2")
+
+  @@id([id_proveedor, num_bastidor])
+  @@index([num_bastidor], map: "num_bastidor")
+}
+
+model vehiculo {
+  num_bastidor String       @id @db.VarChar(17)
+  marca        String       @db.VarChar(30)
+  modelo       String       @db.VarChar(30)
+  anio         Int          @db.Year
+  precio       Decimal      @db.Decimal(10, 2)
+  color        String?      @db.VarChar(20)
+  tipo         String?      @db.VarChar(20)
+  estado       String?      @db.VarChar(20)
+  Modelo3d     String       @db.VarChar(50)
+  Kilometraje  Int
+  combustible  String       @db.VarChar(11)
+  suministra   suministra[]
+  venta        venta?
+}
+
+model venta {
+  id_venta           Int      @id @default(autoincrement())
+  dni_empleado       String   @db.VarChar(9)
+  dni_cliente        String   @db.VarChar(9)
+  precio_venta_total Decimal  @db.Decimal(10, 2)
+  fecha              DateTime @db.Date
+  num_bastidor       String   @unique(map: "num_bastidor") @db.VarChar(17)
+  empleado           empleado @relation(fields: [dni_empleado], references: [dni_empleado], onUpdate: Restrict, map: "venta_ibfk_1")
+  cliente            cliente  @relation(fields: [dni_cliente], references: [dni_cliente], onUpdate: Restrict, map: "venta_ibfk_2")
+  vehiculo           vehiculo @relation(fields: [num_bastidor], references: [num_bastidor], onUpdate: Restrict, map: "venta_ibfk_3")
+
+  @@index([dni_cliente], map: "dni_cliente")
+  @@index([dni_empleado], map: "dni_empleado")
+}
+
+model ruedas {
+  modelo3d          String @id @db.VarChar(50)
+  audi_tt_wheel     Int
+  Drift             Int
+  lamborghini_wheel Int
+  retro_wheel       Int
+  street            Int
+}

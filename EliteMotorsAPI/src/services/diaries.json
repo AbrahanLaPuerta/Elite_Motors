@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "date": "2023-05-01",
+        "weather": "Sunny",
+        "visibility": "poor",
+        "comment": "I almost died of a cacatua atack"
+    },
+    {
+        "id": 2,
+        "date": "2023-05-02",
+        "weather": "Rainy",
+        "visibility": "good",
+        "comment": "I'm not sure if I like this place"
+    },
+    {
+        "id": 3,
+        "date": "2023-05-03",
+        "weather": "Cloudy",
+        "visibility": "poor",
+        "comment": "I don't like this place"
+    },
+    {
+        "id": 4,
+        "date": "2023-05-04",
+        "weather": "Sunny",
+        "visibility": "good",
+        "comment": "I love this place"
+    }
+]

@@ -1,0 +1,137 @@
+
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Fondo general con overlay */
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url(../../../assets/images/Concesionario.png) no-repeat center center / cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -1; /* Para que no tape otras cosas, si aplica */
+  }
+  
+/* Contenedor principal con perspectiva para 3D */
+.auth-wrapper {
+    perspective: 1000px;
+    width: 400px;
+    max-width: 100%;
+}
+
+/* Botones de login/registro */
+.auth-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.auth-toggle button {
+    background: none;
+    border: none;
+    color: #d4af37;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+}
+
+.auth-toggle button.active {
+    border-bottom: 2px solid #d4af37;
+    color: #ffffff;
+}
+
+/* Contenedor del formulario */
+.auth-container {
+    background: #121212;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease-in-out;
+    backface-visibility: hidden;
+    color: #fff;
+}
+
+/* Animaciones angulares para simular rotación */
+:host ::ng-deep .auth-container.ng-animating {
+    animation: none !important;
+}
+
+/* Estilo del título */
+.auth-container h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #d4af37;
+}
+
+/* Formulario centrado y alineado */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+/* Input estilizado */
+form input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: none;
+    background: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: background 0.3s;
+}
+
+form input::placeholder {
+    color: #aaa;
+}
+
+form input:focus {
+    background: #3a3a3a;
+}
+
+/* Botón enviar */
+form button {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 1rem;
+    background: linear-gradient(90deg, #d4af37, #c89c1b);
+    border: none;
+    color: #000;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background: linear-gradient(90deg, #c89c1b, #d4af37);
+}
+
+/* Mensaje de estado */
+.status-message {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #d4af37;
+}
+
+.status-message h2 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
