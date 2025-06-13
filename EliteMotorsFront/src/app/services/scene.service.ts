@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { VehiculosService } from './vehiculos.service';
 
 
 @Injectable({
@@ -26,7 +27,7 @@ export class SceneService {
 
   private clock = new THREE.Clock();
 
-  constructor() { }
+  constructor(private vehiculosService: VehiculosService) {}
 
   initScene(container: HTMLElement, fondo: string): void {
     this.scene = new THREE.Scene();
@@ -110,12 +111,13 @@ export class SceneService {
     });
   }
 
-  async loadCar(modelName: string, roadNumber: number, rings: string = ""): Promise<void> {
+  async loadCar(modelName: string, roadNumber: number, rings: string = "", color: number = 0x555555): Promise<void> {
     const loader = new GLTFLoader();
     loader.load('assets/models/coches/' + modelName + ".glb", async (gltf) => {
       if (this.carModel) {
         this.scene.remove(this.carModel);
       }
+      
 
       this.carModel = gltf.scene;
 
@@ -152,6 +154,7 @@ export class SceneService {
               metalness: 0.3
             });
           }
+
         }
       });
 
@@ -216,6 +219,29 @@ export class SceneService {
       }
     });
   }
+
+  changeCarColor(color: number): void {
+  if (!this.carModel) return;
+
+
+  const carroceriaNames = ['carroceria'];
+
+  this.carModel.traverse((child: THREE.Object3D) => {
+    if ((child as THREE.Mesh).isMesh) {
+      const mesh = child as THREE.Mesh;
+      const nombre = mesh.name.toLowerCase();
+
+      const esCarroceria = carroceriaNames.some(n =>
+        nombre.includes(n.toLowerCase())
+      );
+
+      if (esCarroceria && mesh.material instanceof THREE.MeshStandardMaterial) {
+        mesh.material.color.set(color);
+      }
+    }
+  });
+}
+
 
   loadRoad(roadname: string, numRoads: number): void {
     const loader = new GLTFLoader();

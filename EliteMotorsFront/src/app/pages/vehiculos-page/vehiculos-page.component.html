@@ -1,17 +1,38 @@
-
-
 <!-- <select id="vehicle-selector" (change)="onVehicleChange($event)">
     <option value="">Selecciona un vehículo</option>
     <option *ngFor="let item of miscoches" value="{{ item }}">{{ item }}</option>
 </select> -->
 
 <div class="canvas-wrapper">
-    <div id="renderer-container" style="width: 100vw; height: 100vh;"></div>
+  <div id="renderer-container" style="width: 100vw; height: 100vh;"></div>
 
   <div class="wheel-menu">
     <h3>Selecciona Ruedas</h3>
-    <button (click)="cambiarRuedas()">Deportivas</button>
-    <button (click)="cambiarRuedas()">Todoterreno</button>
-    <button (click)="cambiarRuedas()">Clásicas</button>
+    <button (click)="onVehicleChange('audi_tt_wheel')">Ruedas de audi TT</button>
+    <button (click)="onVehicleChange('Drift')">Ruedas de Drift</button>
+    <button (click)="onVehicleChange('lamborghini_wheel')">Ruedas de Lamborghini</button>
+    <button (click)="onVehicleChange('street')">Ruedas de Calle</button>
+    <button (click)="onVehicleChange('retro_wheel')">Ruedas de Retro</button>
+
+    <button class="volver" (click)="Volver()">Volver</button>
+
+
+    <!-- <label for="colorInput">Color:</label>
+    <input type="color" (input)="cambiarColorVehiculo($event)"> -->
+
   </div>
+
+  <!-- Paleta de bolas de colores -->
+  <div class="color-palette">
+    <div *ngFor="let color of coloresDisponibles" class="color-circle" [style.background]="color"
+      (click)="cambiarColorHex(color)"></div>
+
+    <!-- Selector de color personalizado -->
+    <div class="color-picker-wrapper">
+      <input type="color" (input)="cambiarColorVehiculo($event)" />
+    </div>
+
+  </div>
+
+
 </div>

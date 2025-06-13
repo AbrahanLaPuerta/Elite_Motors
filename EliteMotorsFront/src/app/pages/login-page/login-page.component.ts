@@ -78,7 +78,7 @@ export class LoginPageComponent implements OnInit {
         this.allUsers = data;
       },
       error: (error) => {
-        error =  error.message;
+        error = error.message;
         console.error('Error al obtener los usuarios:', error.message || error);
       }
     });
@@ -108,27 +108,13 @@ export class LoginPageComponent implements OnInit {
         console.log('Datos guardados:', data);
       },
       error: (error) => {
-        console.error('Error al guardar los datos:', error.message || error);
+        // Intenta obtener el mensaje del backend
+        const mensaje = error?.error?.message || 'Error inesperado';
+        console.error('Error al guardar los datos:', mensaje);
+        this.error = mensaje;
       }
-    });
 
-    this.clientService.addCliente({
-      "usuario": "josema",
-      "passwd": "josema",
-      "nombre": "Jose maria",
-      "apellidos": "Codes",
-      "telefono": "653458947",
-      "email": "hola@gmail.ru",
-      "direccion": "calle repipi"
-    }).subscribe({
-      next: (data) => {
-        console.log('Datos guardados:', data);
-      },
-      error: (error) => {
-        console.error('Error al guardar los datos:', error.message || error);
-      }
     });
-
   }
 
   login(): void {

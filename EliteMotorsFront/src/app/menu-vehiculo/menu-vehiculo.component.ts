@@ -45,12 +45,28 @@ export class MenuVehiculoComponent implements OnInit {
   marcas: string[] = []
 
   ngOnInit(): void {
+    this.comprobarLogin();
     this.vehiculosService.getAllVehiculos().subscribe((data) => {
       console.log("Respuesta del servicio:", data)
       this.vehiculos = data
       this.vehiculosFiltrados = [...this.vehiculos]
       this.marcas = [...new Set(this.vehiculos.map((v) => v.marca))].sort()
     })
+  }
+
+  logout(){
+    //acceder al almacenamiento de sesion y borrar el token
+    sessionStorage.removeItem('token');
+    this.router.navigate(['/login']);
+  }
+
+  comprobarLogin(): void {
+    if (sessionStorage.getItem("token")) {
+      // El usuario está autenticado
+    } else {
+      // El usuario no está autenticado, redirigir al login
+      this.router.navigate(['/login']);
+    }
   }
 
   filtrarVehiculos() {
@@ -132,11 +148,6 @@ export class MenuVehiculoComponent implements OnInit {
     this.vehiculosService.selectedVehiculo = vehiculo
     console.log("Vehículo seleccionado para configuración:", vehiculo)
     this.router.navigate(['/vehiculos']);
-  }
-
-  toggleFavorito(vehiculo: Vehiculo) {
-    console.log("Toggle favorito:", vehiculo)
-    // Aquí puedes implementar la funcionalidad de favoritos
   }
 
   // Método para obtener el tipo de combustible con icono

@@ -1,5 +1,3 @@
-
-
 :host {
     display: block;
     width: 100%;
@@ -13,54 +11,151 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: url(../../../assets/images/Concesionario.png) no-repeat center center / cover;
+    background: 
+        linear-gradient(135deg, rgba(18, 18, 18, 0.85) 0%, rgba(26, 26, 26, 0.9) 100%),
+        url(../../../assets/images/Concesionario.png) no-repeat center center / cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: -1; /* Para que no tape otras cosas, si aplica */
-  }
-  
+    z-index: -1;
+    backdrop-filter: blur(2px);
+}
+
+.background-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 70%);
+    animation: backgroundPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundPulse {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.6; }
+}
+
 /* Contenedor principal con perspectiva para 3D */
 .auth-wrapper {
-    perspective: 1000px;
-    width: 400px;
-    max-width: 100%;
+    perspective: 1200px;
+    width: 420px;
+    max-width: 95%;
+    margin: 0 auto;
+    padding: 20px;
+    animation: wrapperEntrance 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ajuste dinámico del ancho para registro */
+.auth-wrapper.register-mode {
+    width: 600px;
+    max-width: 95%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes wrapperEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* Botones de login/registro */
 .auth-toggle {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    background: rgba(42, 42, 42, 0.8);
+    border-radius: 12px;
+    padding: 6px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-toggle::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: calc(50% - 6px);
+    height: calc(100% - 12px);
+    background: linear-gradient(135deg, #d4af37, #c89c1b);
+    border-radius: 8px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+    z-index: 1;
+}
+
+.auth-toggle:has(button:last-child.active)::before {
+    transform: translateX(100%);
 }
 
 .auth-toggle button {
     background: none;
     border: none;
     color: #d4af37;
-    font-weight: bold;
-    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    padding: 12px 24px;
     cursor: pointer;
     font-size: 1.1rem;
-    transition: color 0.3s, border-bottom 0.3s;
-    border-bottom: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 8px;
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .auth-toggle button.active {
-    border-bottom: 2px solid #d4af37;
+    color: #000;
+    text-shadow: none;
+}
+
+.auth-toggle button:not(.active):hover {
     color: #ffffff;
+    transform: translateY(-1px);
 }
 
 /* Contenedor del formulario */
 .auth-container {
-    background: #121212;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    background: linear-gradient(145deg, #121212, #1a1a1a);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(212, 175, 55, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transform-style: preserve-3d;
-    transition: transform 0.8s ease-in-out;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     backface-visibility: hidden;
     color: #fff;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+    transition: left 0.8s;
+}
+
+.auth-container:hover::before {
+    left: 100%;
 }
 
 /* Animaciones angulares para simular rotación */
@@ -71,67 +166,428 @@
 /* Estilo del título */
 .auth-container h1 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     color: #d4af37;
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #d4af37, #f4d03f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.2); }
 }
 
 /* Formulario centrado y alineado */
 form {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+/* Estilos específicos para el formulario de registro */
+form.register-form {
+    gap: 1.5rem;
+}
+
+/* Contenedor de fila para inputs lado a lado */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-row input {
+    flex: 1;
+}
+
+/* Grupos de campos con etiquetas */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.form-group label {
+    color: #d4af37;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 4px;
 }
 
 /* Input estilizado */
 form input {
     width: 100%;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: none;
-    background: #2a2a2a;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    background: linear-gradient(145deg, #2a2a2a, #333333);
     color: #fff;
     font-size: 1rem;
     outline: none;
-    transition: background 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 1px 2px rgba(255, 255, 255, 0.1);
+    position: relative;
+    box-sizing: border-box;
 }
 
 form input::placeholder {
-    color: #aaa;
+    color: #888;
+    transition: color 0.3s;
 }
 
 form input:focus {
-    background: #3a3a3a;
+    background: linear-gradient(145deg, #3a3a3a, #404040);
+    border-color: #d4af37;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 0 4px rgba(212, 175, 55, 0.2),
+        0 4px 12px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+form input:focus::placeholder {
+    color: #bbb;
+}
+
+form input:hover:not(:focus) {
+    background: linear-gradient(145deg, #353535, #3a3a3a);
+    transform: translateY(-1px);
+}
+
+/* Sección de información personal */
+.personal-info {
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.personal-info::before {
+    content: '👤 Información Personal';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: linear-gradient(145deg, #121212, #1a1a1a);
+    color: #d4af37;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sección de contacto */
+.contact-info {
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.contact-info::before {
+    content: '📞 Información de Contacto';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: linear-gradient(145deg, #121212, #1a1a1a);
+    color: #d4af37;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sección de cuenta */
+.account-info {
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.account-info::before {
+    content: '🔐 Datos de Cuenta';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: linear-gradient(145deg, #121212, #1a1a1a);
+    color: #d4af37;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* Botón enviar */
 form button {
     width: 100%;
-    padding: 0.75rem;
-    margin-top: 1rem;
-    background: linear-gradient(90deg, #d4af37, #c89c1b);
+    padding: 1rem;
+    margin-top: 1.5rem;
+    background: linear-gradient(135deg, #d4af37, #c89c1b);
     border: none;
     color: #000;
-    font-weight: bold;
-    border-radius: 8px;
-    font-size: 1rem;
+    font-weight: 800;
+    border-radius: 12px;
+    font-size: 1.1rem;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 8px 16px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+form button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s;
+}
+
+form button:hover::before {
+    left: 100%;
 }
 
 form button:hover {
-    background: linear-gradient(90deg, #c89c1b, #d4af37);
+    background: linear-gradient(135deg, #c89c1b, #d4af37);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 24px rgba(212, 175, 55, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+form button:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 8px rgba(212, 175, 55, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+form button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    background: linear-gradient(135deg, #666, #555);
 }
 
 /* Mensaje de estado */
 .status-message {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     text-align: center;
     color: #d4af37;
+    padding: 1rem;
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    backdrop-filter: blur(10px);
+    animation: messageSlideIn 0.5s ease-out;
+}
+
+@keyframes messageSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .status-message h2 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     margin: 0;
+    font-weight: 600;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .auth-wrapper {
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .auth-wrapper.register-mode {
+        width: 100%;
+    }
+    
+    .auth-container {
+        padding: 2rem 1.5rem;
+        border-radius: 16px;
+    }
+    
+    .auth-container h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .personal-info,
+    .contact-info,
+    .account-info {
+        padding: 1rem;
+    }
+    
+    .personal-info::before,
+    .contact-info::before,
+    .account-info::before {
+        font-size: 0.75rem;
+        padding: 0 8px;
+    }
+    
+    form input {
+        padding: 0.9rem;
+        font-size: 16px; /* Evita zoom en iOS */
+    }
+    
+    form button {
+        padding: 0.9rem;
+        font-size: 1rem;
+    }
+    
+    .auth-toggle button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-wrapper {
+        padding: 10px;
+    }
+    
+    .auth-container {
+        padding: 1.5rem 1rem;
+    }
+    
+    .auth-container h1 {
+        font-size: 1.6rem;
+    }
+    
+    form {
+        gap: 0.8rem;
+    }
+    
+    form.register-form {
+        gap: 1rem;
+    }
+    
+    .personal-info,
+    .contact-info,
+    .account-info {
+        padding: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    form input {
+        padding: 0.8rem;
+    }
+    
+    form button {
+        padding: 0.8rem;
+        margin-top: 1rem;
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus visible para navegación por teclado */
+.auth-toggle button:focus-visible,
+form input:focus-visible,
+form button:focus-visible {
+    outline: 2px solid #d4af37;
+    outline-offset: 2px;
+}
+
+/* Estados adicionales */
+form input:invalid:not(:placeholder-shown) {
+    border-color: #ff4757;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 0 4px rgba(255, 71, 87, 0.2);
+}
+
+form input:valid:not(:placeholder-shown) {
+    border-color: #2ed573;
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 0 4px rgba(46, 213, 115, 0.2);
+}
+
+/* Animación de carga para el botón */
+@keyframes buttonLoading {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+form button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid transparent;
+    border-top: 2px solid #000;
+    border-radius: 50%;
+    animation: buttonLoading 1s linear infinite;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+
+.error{
+    top: 20%;
+    left: 45%;
+    position: absolute;
+    color: #ff4757;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    background: rgba(255, 71, 87, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    animation: errorShake 0.5s ease-in-out;
+}

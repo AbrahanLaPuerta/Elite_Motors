@@ -7,15 +7,26 @@ import { VehiculosService } from '../../services/vehiculos.service';
 @Component({
   selector: 'app-vehiculos-page',
   templateUrl: './vehiculos-page.component.html',
-  imports:[CommonModule],
+  imports: [CommonModule],
   styleUrls: ['./vehiculos-page.component.css']
 })
 export class VehiculosPageComponent implements AfterViewInit {
-  constructor(private sceneService: SceneService, private router: Router, 
-  private vehiculosService: VehiculosService) {}
+  constructor(private sceneService: SceneService, private router: Router,
+    private vehiculosService: VehiculosService) { }
 
   SelectedCar: string = "";
-  
+
+  coloresDisponibles: string[] = [
+    '#ff0000', // rojo
+    '#00ff00', // verde
+    '#0000ff', // azul
+    '#ffff00', // amarillo
+    '#ffffff', // blanco
+    '#000000', // negro
+    '#ff00ff', // fucsia
+    '#00ffff'  // cian
+  ];
+
   ngOnInit(): void {
     if (!this.vehiculosService.selectedVehiculo) {
       console.error("No se ha seleccionado un vehículo. Redirigiendo a la página de vehículos.");
@@ -23,7 +34,7 @@ export class VehiculosPageComponent implements AfterViewInit {
       return;
     }
     this.SelectedCar = ""
-    this.SelectedCar = this.vehiculosService.selectedVehiculo.Modelo3d; 
+    this.SelectedCar = this.vehiculosService.selectedVehiculo.Modelo3d;
   }
 
   ngAfterViewInit(): void {
@@ -36,26 +47,39 @@ export class VehiculosPageComponent implements AfterViewInit {
     }
   }
 
-  // onVehicleChange(event: Event): void {
-  //   const selectElement = event.target as HTMLSelectElement;
-  //   const selectedVehicle = selectElement.value;
+  onVehicleChange(rueda: string): void {
+    // const selectElement = event.target as HTMLSelectElement;
+    // const selectedVehicle = selectElement.value;
 
-  //   const container = document.getElementById('renderer-container');
-  //   if (container) {
-  //     console.log('Cambiando vehículo:', selectedVehicle);  // Verifica el cambio de vehículo
-  //     // Limpiar la escena antes de cargar el nuevo vehículo
-  //     this.sceneService.clearScene();
-  //     this.sceneService.loadCar(selectedVehicle, 10, "lamborghini_wheel"); // Asegúrate de que el nombre corresponde al recurso
-  //     this.sceneService.loadRoad('road__avenue__street', 10);  // Asegúrate de que la carretera se está cargando bien
-  //     this.sceneService.setSpeed(0.4, 0.2); // Reiniciar la velocidad si es necesario
-  //   }
-  // }
+    // console.log("Elemento seleccionado:", selectElement);
 
-  vehiculos(){
-    console.log("Vehiculos", this.SelectedCar);
+    const container = document.getElementById('renderer-container');
+    if (container) {
+      console.log('Cambiando vehículo:', this.SelectedCar);  // Verifica el cambio de vehículo
+      // Limpiar la escena antes de cargar el nuevo vehículo
+      this.sceneService.clearScene();
+      this.sceneService.loadCar(this.SelectedCar, 0, rueda); // Asegúrate de que el nombre corresponde al recurso
+      this.sceneService.loadRoad('road__avenue__street', 1);  // Asegúrate de que la carretera se está cargando bien
+      this.sceneService.setSpeed(0, 0); // Reiniciar la velocidad si es necesario
+    }
   }
 
-  cambiarRuedas(){
-    console.log("Cambiando ruedas del vehículo:", this.SelectedCar);
+  Volver(){
+      this.sceneService.clearScene();
+      this.router.navigate(['/menu']);
   }
+
+  cambiarColorHex(hex: string): void {
+    const color = parseInt(hex.replace('#', ''), 16);
+    this.sceneService.changeCarColor(color);
+  }
+
+  cambiarColorVehiculo(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const hex = input.value;
+    const color = parseInt(hex.replace('#', ''), 16);
+    this.sceneService.changeCarColor(color);
+  }
+
+
 }

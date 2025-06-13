@@ -3,25 +3,29 @@
   <div class="header">
     <div class="header-content">
       <div class="header-info">
-        <h1>Vehículos Disponibles</h1>
-        <p>Encuentra el coche perfecto para ti</p>
+        <div class="header-logo">
+          <img src="../../assets/images/logo.png" alt="Logo Elite Motors" />
+        </div>
+        <div>
+            <h1>Elite Motors</h1>
+            <p>Encuentra el coche perfecto para ti</p>
+        </div>
       </div>
       <div class="view-buttons">
-        <button 
-          (click)="vistaGrid = true"
-          [class]="'view-btn ' + (vistaGrid ? 'active' : '')"
-        >
+        <button (click)="vistaGrid = true" [class]="'view-btn ' + (vistaGrid ? 'active' : '')">
           <i class="fas fa-th"></i>
           Grid
         </button>
-        <button 
-          (click)="vistaGrid = false"
-          [class]="'view-btn ' + (!vistaGrid ? 'active' : '')"
-        >
+        <button (click)="vistaGrid = false" [class]="'view-btn ' + (!vistaGrid ? 'active' : '')">
           <i class="fas fa-list"></i>
           Lista
         </button>
       </div>
+      <div class="user-actions">
+        <button class="btn-secondary" (click)="logout()">
+          <i class="fas fa-sign-out-alt"></i>
+          Salir
+        </button>
     </div>
   </div>
 
@@ -32,10 +36,7 @@
         <div class="filters-card">
           <div class="filters-header">
             <h2><i class="fas fa-filter"></i> Filtros</h2>
-            <button 
-              class="mobile-filter-btn"
-              (click)="toggleFiltrosMobile()"
-            >
+            <button class="mobile-filter-btn" (click)="toggleFiltrosMobile()">
               <i class="fas fa-filter"></i>
               Filtros
             </button>
@@ -47,12 +48,7 @@
               <label><i class="fas fa-search"></i> Buscar vehículo</label>
               <div class="search-input">
                 <i class="fas fa-search"></i>
-                <input
-                  type="text"
-                  placeholder="Marca, modelo..."
-                  [(ngModel)]="busqueda"
-                  (input)="filtrarVehiculos()"
-                />
+                <input type="text" placeholder="Marca, modelo..." [(ngModel)]="busqueda" (input)="filtrarVehiculos()" />
               </div>
             </div>
 
@@ -61,10 +57,7 @@
             <!-- Marca -->
             <div class="filter-group">
               <label><i class="fas fa-car"></i> Marca</label>
-              <select 
-                [(ngModel)]="filtroMarca"
-                (change)="filtrarVehiculos()"
-              >
+              <select [(ngModel)]="filtroMarca" (change)="filtrarVehiculos()">
                 <option value="">Todas las marcas</option>
                 <option *ngFor="let marca of marcas" [value]="marca">{{marca}}</option>
               </select>
@@ -73,10 +66,7 @@
             <!-- Precio -->
             <div class="filter-group">
               <label><i class="fas fa-euro-sign"></i> Rango de precio</label>
-              <select 
-                [(ngModel)]="filtroPrecio"
-                (change)="filtrarVehiculos()"
-              >
+              <select [(ngModel)]="filtroPrecio" (change)="filtrarVehiculos()">
                 <option value="">Cualquier precio</option>
                 <option value="0-25000">Hasta €25.000</option>
                 <option value="25000-40000">€25.000 - €40.000</option>
@@ -88,10 +78,7 @@
             <!-- Combustible -->
             <div class="filter-group">
               <label><i class="fas fa-gas-pump"></i> Tipo de combustible</label>
-              <select 
-                [(ngModel)]="filtroCombustible"
-                (change)="filtrarVehiculos()"
-              >
+              <select [(ngModel)]="filtroCombustible" (change)="filtrarVehiculos()">
                 <option value="">Cualquier combustible</option>
                 <option value="gasolina">Gasolina</option>
                 <option value="diesel">Diésel</option>
@@ -112,7 +99,7 @@
       <div class="main-section">
         <!-- Barra de búsqueda móvil -->
         <div class="mobile-search">
-          
+
         </div>
 
         <!-- Resultados -->
@@ -121,11 +108,7 @@
             <i class="fas fa-car"></i>
             <span class="results-count">{{vehiculosFiltrados.length}}</span> vehículos encontrados
           </div>
-          <select 
-            [(ngModel)]="ordenamiento"
-            (change)="ordenarVehiculos()"
-            class="sort-select"
-          >
+          <select [(ngModel)]="ordenamiento" (change)="ordenarVehiculos()" class="sort-select">
             <option selected value="precio-asc">Precio: menor a mayor</option>
             <option value="precio-desc">Precio: mayor a menor</option>
             <option value="anio-desc">Año: más reciente</option>
@@ -138,12 +121,9 @@
           <div *ngFor="let vehiculo of vehiculosFiltrados" class="vehicle-card">
             <!-- Imagen -->
             <div class="vehicle-image">
-              <img 
-                [src]="'../assets/images/'+vehiculo.Modelo3d+'.png'" 
-                [alt]="vehiculo.marca + ' ' + vehiculo.modelo"
-                onerror="this.src='https://via.placeholder.com/300x200/f0f0f0/666?text=Sin+Imagen'"
-              />
-              
+              <img [src]="'../assets/images/'+vehiculo.Modelo3d+'.png'" [alt]="vehiculo.marca + ' ' + vehiculo.modelo"
+                onerror="this.src='https://via.placeholder.com/300x200/f0f0f0/666?text=Sin+Imagen'" />
+
             </div>
 
             <!-- Contenido -->
@@ -153,7 +133,7 @@
                 <span [class]="getEstadoBadgeClass(vehiculo.estado)">{{vehiculo.estado}}</span>
               </div>
               <p class="vehicle-price">€{{vehiculo.precio | number:'1.0-0'}}</p>
-              
+
               <div class="vehicle-details">
                 <div class="detail-item">
                   <i class="far fa-calendar"></i>
@@ -192,25 +172,22 @@
         <div *ngIf="!vistaGrid" class="vehicles-list">
           <div *ngFor="let vehiculo of vehiculosFiltrados" class="vehicle-list-item">
             <div class="list-image">
-              <img 
-                [src]="'../assets/images/'+vehiculo.Modelo3d+'.png'" 
-                [alt]="vehiculo.marca + ' ' + vehiculo.modelo"
-                onerror="this.src='https://via.placeholder.com/200x140/f0f0f0/666?text=Sin+Imagen'"
-              />
+              <img [src]="'../assets/images/'+vehiculo.Modelo3d+'.png'" [alt]="vehiculo.marca + ' ' + vehiculo.modelo"
+                onerror="this.src='https://via.placeholder.com/200x140/f0f0f0/666?text=Sin+Imagen'" />
               <div class="combustible-badge">
                 <i [class]="getCombustibleIcon(vehiculo.combustible)"></i>
               </div>
             </div>
-            
+
             <div class="list-content">
               <div class="list-header">
                 <div class="list-title">
                   <h3>{{vehiculo.marca}} {{vehiculo.modelo}}</h3>
                   <p class="vehicle-price">€{{vehiculo.precio | number:'1.0-0'}}</p>
                 </div>
-                
+
               </div>
-              
+
               <div class="list-details">
                 <div class="detail-item">
                   <i class="far fa-calendar"></i>
@@ -229,7 +206,7 @@
                   <span>{{vehiculo.combustible | titlecase}}</span>
                 </div>
               </div>
-              
+
               <div class="list-buttons">
                 <button class="btn-primary" (click)="verDetalles(vehiculo)">
                   <i class="far fa-eye"></i>
@@ -276,12 +253,9 @@
           <!-- Imagen del vehículo -->
           <div class="modal-image-section">
             <div class="modal-image-container">
-              <img 
-                [src]="'../assets/images/'+vehiculoSeleccionado.Modelo3d+'.png'" 
-                [alt]="vehiculoSeleccionado.marca + ' ' + vehiculoSeleccionado.modelo"
-                class="modal-vehicle-image"
-                onerror="this.src='https://via.placeholder.com/500x350/f0f0f0/666?text=Sin+Imagen'"
-              />
+              <img [src]="'../assets/images/'+vehiculoSeleccionado.Modelo3d+'.png'"
+                [alt]="vehiculoSeleccionado.marca + ' ' + vehiculoSeleccionado.modelo" class="modal-vehicle-image"
+                onerror="this.src='https://via.placeholder.com/500x350/f0f0f0/666?text=Sin+Imagen'" />
               <div class="modal-image-overlay">
                 <div class="combustible-badge large">
                   <i [class]="getCombustibleIcon(vehiculoSeleccionado.combustible)"></i>

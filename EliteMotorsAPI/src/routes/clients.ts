@@ -29,7 +29,7 @@ router.post("/register", async (req, res) => {
 
         res.json(addedDiaryEntry);
     } catch (e: any) {
-        res.status(400).send(e.message);
+        res.status(400).json({ message: e.message });
     }
 });
 

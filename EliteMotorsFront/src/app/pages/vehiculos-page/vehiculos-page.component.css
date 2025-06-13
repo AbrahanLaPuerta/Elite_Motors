@@ -33,3 +33,115 @@ canvas {
 .wheel-menu button:hover {
   background: #d4b865;
 }
+
+.color-palette {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.color-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  transition: transform 0.2s, border 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+    border: 2px solid #000;
+  }
+}
+
+/* Estilo para el input de color camuflado con círculo */
+.color-picker-label {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.color-picker-label input[type="color"] {
+  position: absolute;
+  opacity: 0;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.custom-color-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, #fff, #000);
+  border: 2px dashed #666;
+}
+
+.color-palette {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.color-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  transition: transform 0.2s, border 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+    border: 2px solid #000;
+  }
+}
+
+
+.color-palette{
+  position: absolute;
+  top: 20px;
+  left: 20px
+}
+/* Estilo para el input de color camuflado con círculo */
+.color-picker-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.color-picker-wrapper input[type="color"] {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+
+  &::-moz-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+}
+
+.wheel-menu.volver{
+  background-color: green;
+}
+
+

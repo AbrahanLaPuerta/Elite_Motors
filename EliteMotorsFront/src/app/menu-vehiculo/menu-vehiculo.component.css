@@ -1055,11 +1055,22 @@ select:focus {
   }
 }
 span.status-badge-usado {
-  color: white;
+  color: black;
 }
 span.status-badge-nuevo {
-  color: white;
+  color: black;
 }
 span.status-badge {
-  color: white;
+  color: black;
+}
+
+.header-logo img{
+  max-width: 70px;
+  margin-top: 10px;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
